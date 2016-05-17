@@ -1,0 +1,117 @@
+		#wrap{height: 100%;background:url(img/b0.jpg);background-size:cover;overflow: hidden; position: relative;}
+		/*背景区域*/
+		.bg{height: 100%;width: 100%;position:absolute;opacity: 0;}
+		#bg1{background:url(img/b1.png);background-size:contain;}
+		#bg2{background:url(img/b2.png);background-size:contain;}
+		#bg3{background:url(img/b3.png);background-size:contain;}
+		#bg_footer{position:absolute;height: 42px;width:100%;background: #777777;bottom: 0;}
+		#bg_tree{position:absolute;width:82px;height: 41px;background:url(img/b-tree.png);background-size:cover;bottom: 41px;right: 45px;opacity: 0;}
+		#bg_son{position:absolute;width:138px;height: 178px;background:url(img/bg-sun.png);background-size:cover;top: 70px;left: 0px;opacity: 0;}
+		
+		/*开始(结果)页*/
+		#begin{height: 100%;width:100%;/*transition: all 0.6s;*/position: absolute;opacity: 0; /*-webkit-transform: translateZ(0);*/text-align: center;}
+		#title{background:url(img/title.png);background-size:contain;width:278px;height: 63px;margin: 0 auto;margin-top: 55px;}
+		.result-text{margin-top: 20px;font-size:32px;line-height: 32px;}
+		#resultNum{line-height: 48px;}
+		.audio{width: 56px;height: 56px;border:2px solid #fff;border-radius:2px;background:pink url(img/audio.png) -7px -2px;position: absolute;bottom: 198px;left: 50%;margin-left: -28px;background-size:72px;transition:all 0.25s;-webkit-transition:all 0.25s;}
+		.audio.disable{background-position:-3px -58px;}
+		#start{width: 112px;margin:0 auto;height: 112px;position: absolute;bottom: 60px;left: 50%;margin-left: -56px;background:url(img/btn.png);background-size:112px;}		
+		
+		/*主区域*/
+		#game{height: 100%;width:100%;position: absolute;text-align: center;display: none;}
+			/*分数记录*/
+		#record_now{position:absolute;left:20px;top:30px;font-size: 42px;}
+		#record_best_container{position:absolute;right:20px;top:20px;}
+		.record-best-top{color: #fff;font-size: 24px;}
+		#record_best{margin-top: 12px;font-size: 32px;}
+		
+		#game_footer{position:absolute;opacity:0;bottom:0px;width:100%;height: 130px;background: url(img/pao.png) center bottom no-repeat;background-size: contain;}
+		#left_btn,#right_btn{position:absolute;bottom:20px;width: 80px;height: 80px;}
+		#left_btn{left:20px;background: url(img/left.png); background-size: cover;}
+		#right_btn{right:20px;background: url(img/right.png); background-size: cover;}
+			
+		#imgList{width: 48px;position: absolute;left: 50%;margin-left: -24px;}
+		#imgList div{width: 48px;height: 50px;/*-webkit-animation-duration: 0.8s;  animation-duration: 0.8s;  -webkit-animation-fill-mode: both; animation-fill-mode: both;animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite;*/}
+		#imgList .red{background: url(img/right.png) 0 0 no-repeat;background-size: 48px;}
+		#imgList .blue{background: url(img/left.png) 0 0 no-repeat;background-size: 48px;}
+		.error{-webkit-transform: scale(1.5);
+    transform: scale(1.5);}
+    	
+    	
+		
+		/*子弹分散效果*/	
+		.bomb{width: 10px;height: 10px;position: absolute;left: 50%;margin-left: -7px;/*transition: all 0.25s;-webkit-transition: all 0.25s;*/-webkit-transform: translateZ(0);background: url(img/paodan.png); background-size: 14px;}		
+		.bombAnimate{background: transparent;position: relative;transform:scale(8);-webkit-transform:scale(16);transition: all 0.25s ease-in;-webkit-transition: all 0.25s ease-in;}
+		.bombAnimate i{position: absolute;width: 28px;height: 28px;-webkit-transform:scale(0.05);transition: all 0.25s linear;-webkit-transition: all 0.25s linear;}	
+		.bombAnimate i:nth-child(odd){background: url(img/right.png);background-size: 48px;}
+		.bombAnimate i:nth-child(even){background: url(img/left.png);background-size: 48px;}
+		.bombAnimate i:nth-child(1){background-position:0 0;top: 0;left: 0;-webkit-transform-origin: top left;}
+		.bombAnimate i:nth-child(2){background-position:24px 0;top: 0;right: 0;-webkit-transform-origin: top right;}
+		.bombAnimate i:nth-child(3){background-position:0 24px;bottom: 0;left: 0;-webkit-transform-origin: bottom left;}
+		.bombAnimate i:nth-child(4){background-position:24px 24px;bottom: 0;right: 0;-webkit-transform-origin: bottom right;}
+		@-webkit-keyframes myswing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+		@keyframes myswing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+.myswing {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-transform-origin: top center;
+  transform-origin: top center;
+  -webkit-animation-name: myswing;
+  animation-name: myswing;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}

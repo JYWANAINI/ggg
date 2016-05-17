@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/base.css" />	
+		<link rel="stylesheet" type="text/css" href="css/animate.css"/>		
+		<style>
+		#wrap{height: 100%;background:url(img/b0.jpg);background-size:cover;overflow: hidden; position: relative;}
+		/*背景区域*/
+		.bg{height: 100%;width: 100%;position:absolute;opacity: 0;}
+		#bg1{background:url(img/b1.png);background-size:contain;}
+		#bg2{background:url(img/b2.png);background-size:contain;}
+		#bg3{background:url(img/b3.png);background-size:contain;}
+		#bg_footer{position:absolute;height: 42px;width:100%;background: #777777;bottom: 0;}
+		#bg_tree{position:absolute;width:82px;height: 41px;background:url(img/b-tree.png);background-size:cover;bottom: 41px;right: 45px;opacity: 0;}
+		#bg_son{position:absolute;width:138px;height: 178px;background:url(img/bg-sun.png);background-size:cover;top: 70px;left: 0px;opacity: 0;}
+		
+		/*开始(结果)页*/
+		#begin{height: 100%;width:100%;/*transition: all 0.6s;*/position: absolute;opacity: 0; /*-webkit-transform: translateZ(0);*/text-align: center;}
+		#title{background:url(img/title.png);background-size:contain;width:278px;height: 63px;margin: 0 auto;margin-top: 55px;}
+		.result-text{margin-top: 20px;font-size:32px;line-height: 32px;}
+		#resultNum{line-height: 48px;}
+		.audio{width: 56px;height: 56px;border:2px solid #fff;border-radius:2px;background:pink url(img/audio.png) -7px -2px;position: absolute;bottom: 198px;left: 50%;margin-left: -28px;background-size:72px;transition:all 0.25s;-webkit-transition:all 0.25s;}
+		.audio.disable{background-position:-3px -58px;}
+		#start{width: 112px;margin:0 auto;height: 112px;position: absolute;bottom: 60px;left: 50%;margin-left: -56px;background:url(img/btn.png);background-size:112px;}		
+		
+		/*主区域*/
+		#game{height: 100%;width:100%;position: absolute;text-align: center;display: none;}
+			/*分数记录*/
+		#record_now{position:absolute;left:20px;top:30px;font-size: 42px;}
+		#record_best_container{position:absolute;right:20px;top:20px;}
+		.record-best-top{color: #fff;font-size: 24px;}
+		#record_best{margin-top: 12px;font-size: 32px;}
+		
+		#game_footer{position:absolute;opacity:0;bottom:0px;width:100%;height: 130px;background: url(img/pao.png) center bottom no-repeat;background-size: contain;}
+		#left_btn,#right_btn{position:absolute;bottom:20px;width: 80px;height: 80px;}
+		#left_btn{left:20px;background: url(img/left.png); background-size: cover;}
+		#right_btn{right:20px;background: url(img/right.png); background-size: cover;}
+			
+		#imgList{width: 48px;position: absolute;left: 50%;margin-left: -24px;}
+		#imgList div{width: 48px;height: 50px;/*-webkit-animation-duration: 0.8s;  animation-duration: 0.8s;  -webkit-animation-fill-mode: both; animation-fill-mode: both;animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite;*/}
+		#imgList .red{background: url(img/right.png) 0 0 no-repeat;background-size: 48px;}
+		#imgList .blue{background: url(img/left.png) 0 0 no-repeat;background-size: 48px;}
+		.error{-webkit-transform: scale(1.5);
+    transform: scale(1.5);}
+    	
+    	
+		
+		/*子弹分散效果*/	
+		.bomb{width: 10px;height: 10px;position: absolute;left: 50%;margin-left: -7px;/*transition: all 0.25s;-webkit-transition: all 0.25s;*/-webkit-transform: translateZ(0);background: url(img/paodan.png); background-size: 14px;}		
+		.bombAnimate{background: transparent;position: relative;transform:scale(8);-webkit-transform:scale(16);transition: all 0.25s ease-in;-webkit-transition: all 0.25s ease-in;}
+		.bombAnimate i{position: absolute;width: 28px;height: 28px;-webkit-transform:scale(0.05);transition: all 0.25s linear;-webkit-transition: all 0.25s linear;}	
+		.bombAnimate i:nth-child(odd){background: url(img/red-dog.png);background-size: 48px;}
+		.bombAnimate i:nth-child(even){background: url(img/blue-dog.png);background-size: 48px;}
+		.bombAnimate i:nth-child(1){background-position:0 0;top: 0;left: 0;-webkit-transform-origin: top left;}
+		.bombAnimate i:nth-child(2){background-position:24px 0;top: 0;right: 0;-webkit-transform-origin: top right;}
+		.bombAnimate i:nth-child(3){background-position:0 24px;bottom: 0;left: 0;-webkit-transform-origin: bottom left;}
+		.bombAnimate i:nth-child(4){background-position:24px 24px;bottom: 0;right: 0;-webkit-transform-origin: bottom right;}
+		@-webkit-keyframes myswing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+		@keyframes myswing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+
+  100% {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+.myswing {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-transform-origin: top center;
+  transform-origin: top center;
+  -webkit-animation-name: myswing;
+  animation-name: myswing;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<!--autoplay="autoplay"-->
+			<audio id="audio0" src="audio/bg.mp3" loop="true" autoplay="autoplay"></audio>			
+			<audio id="audio_launch" src="audio/launch.mp3"></audio>
+			<audio id="audio_bomb" src="audio/bomb.mp3"></audio>
+			<audio id="audio_over" src="audio/over.mp3"></audio>
+			
+			<!--背景区域-->
+			<div id="bg3" class="bg"></div>
+			<div id="bg2" class="bg"></div>
+			<div id="bg1" class="bg"></div>
+			<div id="bg_footer"></div>
+			<div id="bg_tree"></div>
+			<div id="bg_son"></div>
+			
+			<!--开始区域-->
+		    <div id="begin">		    	
+		    	<div id="title"></div>
+		    	<div id="result_text" class="result-text hide">
+		    		<p style="font-size: 32px;">当前分数</p>
+		    		<p id="resultNum">12</p>
+		    		<p style="font-size: 24px; margin-top: 12px;">最高分数：<span id="begin_record_best">0</span></p>
+		    	</div>
+		    	<div class="audio"></div>
+		    	<div id="start"></div>
+		    </div>
+		    
+			<!--游戏区域-->
+		    <div id="game" style="display: none;">
+		    	<div id="record_now">0</div>		    	
+		    	<div id="record_best_container">
+		    		<div class="record-best-top">TOP</div>
+		    		<div id="record_best">0</div>
+		    	</div>
+		    	<!--imglist-->
+		    	<div id="imgList"></div>
+		    	<!--射击按钮区域-->
+		    	<div id="game_footer" style="opacity: 1;">
+		    		<div id='left_btn'></div>
+		    		<div id='right_btn'></div>
+		    	</div>
+		    	<!--<div class="bomb"></div>-->
+		    </div>
+		    
+		</div>
+		<script type="text/javascript" src="js/zepto.min.js" ></script>
+		<script src="js/animationFrame.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+		document.body.addEventListener('touchstart', function () {return false;}); 
+		
+		//兼容PC
+		if(!('ontouchstart' in window)){
+			$.fn.tap = $.fn.click;
+		}
+		var CP = {};		
+		CP.getType = function(o){
+			var _t;
+			return ((_t = typeof(o)) == "object" ? o==null && "null" || Object.prototype.toString.call(o).slice(8,-1):_t).toLowerCase();
+		};	
+		CP.CloneObj = function(destination,source){
+			for(var p in source){
+				if(CP.getType(source[p])=="array"||CP.getType(source[p])=="object"){
+					destination[p]=CP.getType(source[p])=="array"?[]:{};
+					arguments.callee(destination[p],source[p]);
+				}else{
+					destination[p]=source[p];
+				}
+			}
+			return destination;
+		};
+		
+		//音乐	
+		if(window.androidMedia){	
+			CP.Media = {};
+			CP.Media.Media0 = androidMedia.creatMedia('dog/audio/bg.mp3',true);
+			CP.Media.Media0.play();			
+			CP.Media.Media_launch = androidMedia.creatMedia('dog/audio/launch.mp3',false);
+			CP.Media.Media_bomb = androidMedia.creatMedia('dog/audio/bomb.mp3',false);
+			CP.Media.Media_over = androidMedia.creatMedia('dog/audio/over.mp3',false);
+		}else{
+			CP.Media = {
+				Media0 : {
+					play:function(){$("#audio0").get(0).play();},
+					pause:function(){$("#audio0").get(0).pause();}
+				},
+				Media_launch : {
+					playFromHead:function(){$("#audio_launch").get(0).load();$("#audio_launch").get(0).play();}
+				},
+				Media_bomb : {
+					playFromHead:function(){$("#audio_bomb").get(0).load();$("#audio_bomb").get(0).play();}
+				},
+				Media_over : {
+					playFromHead:function(){$("#audio_launch").get(0).load();$("#audio_over").get(0).play();}
+				}
+			};
+		}
+		if(window.androidData){
+			CP.Data = {
+				set:function(name,val){
+					return androidData.set(name,val);
+				},
+				get:function(name){
+					return androidData.get(name);
+				}
+			}
+		}else{
+			CP.Data = {
+				set:function(name,val){
+					return localStorage.setItem(name,val);
+				},
+				get:function(name){
+					return localStorage.getItem(name);
+				}
+			}
+		}
+			
+			(function(){		
+				
+				var game = {					
+					successNum:0,//成功数目	
+					lev:1,//难度等级		
+					everLevAdd:1,//每个难度等级增加几次dog（每次增加10个）
+					_test_initSpeed:1.2,//根据测试得出初始速度
+					initSpeed:1.2,//运算中用到的变量，初始速度 以后没提升一个等级 1.2+1*0.5
+					dog:[],//0 红狗 1蓝狗				
+					state:1,//答题状态 1正在游戏 0游戏结束 2正在提示难度期间
+					ifBgMusic:1,
+					windowH:$(window).height(),
+					imgWrap:$("#imgList"),
+					bestRecord:0,//历史最高分
+					init:function(){
+						this.bind();
+						
+						//this.creatList();
+						//获取最高分
+						this.bestRecord = CP.Data.get('G_dog_best_record');
+						if(this.bestRecord){
+							$("#record_best").text(this.bestRecord);
+							$("#begin_record_best").text(this.bestRecord);
+						}
+						//动画list
+						$("#bg1").addClass('bounceInUp').addClass('animated');
+						setTimeout(function(){
+							$("#bg2").addClass('bounceInUp').addClass('animated');
+						},250)
+						setTimeout(function(){
+							$("#bg3").addClass('bounceInUp').addClass('animated');
+						},500)
+						setTimeout(function(){
+							$("#bg_tree").addClass('bounceInUp').addClass('animated');
+							$("#bg_son").addClass('bounceInLeft').addClass('animated');
+						},750)
+						setTimeout(function(){
+							$("#begin").addClass('bounceInDown').addClass('animated');
+							$("#bg_son").removeClass('bounceInLeft').addClass('flash');
+						},1600)
+						//测试页面速度
+						var t1 = new Date(),t2;
+						var n = 0,m;
+						function test(){
+							m = requestAnimationFrame(function(){
+								n++;
+								if(n<10){
+									test();
+								}else{
+									cancelAnimationFrame(m);
+									t2 = new Date();
+									if(t2-t1<300){
+										game._test_initSpeed = 1.2;
+									}else if(t2-t1<500){
+										game._test_initSpeed = 2;
+									}else if(t2-t1<900){
+										game._test_initSpeed = 3;
+									}else if(t2-t1<1200){
+										game._test_initSpeed = 4;
+									}else{
+										game._test_initSpeed = 5;
+									}
+								}
+							})
+						}
+						test();
+						
+						//if(t2-t1>800)
+					},					
+					//初始化数据
+					creatList:function(){
+						this.state = 1;
+						this.y = -10*50;
+						this.imgWrap.html(this.randomImg(10).join('')).css({
+							'top':this.y+'px'
+						});
+						this.imgListMove();
+//						//页面显示重置
+//						$("#successNum").text('0');
+//						$("#item").html('<p class="item-p"><span id="item_text_0">1+2</span>=<em class="result"></em></p>');
+					},
+					bind:function(){							
+						//开始
+						$('#start').tap(function(){				
+							game.start();
+						})
+						//开火按钮
+						$('#left_btn').on('touchstart',function(){							
+							game.fire(1);
+						})
+						$('#right_btn').on('touchstart',function(){							
+							game.fire(0);
+						})						
+						//背景音乐
+						$('.audio').on('touchstart',function(){
+							if($(this).is('.disable')){
+								$(this).removeClass('disable');								
+								CP.Media.Media0.play();
+								game.ifBgMusic = true;
+							}else{
+								$(this).addClass('disable');
+								CP.Media.Media0.pause();								
+								game.ifBgMusic = false;
+							}
+						})
+					},
+					//开火
+					fire:function(k){
+						if(game.state == 0){
+							return;
+						}
+						if(game.ifBgMusic){
+							CP.Media.Media_launch.playFromHead();
+						}
+						creatBomb();
+						if(k == game.dog[0]){//正确
+							$("#record_now").text(++game.successNum);
+							game.dog.shift();
+							setTimeout(function(){
+								var divL = game.imgWrap.find('div');
+								divL.eq(divL.length-1).remove();
+								if(game.ifBgMusic){
+									CP.Media.Media_bomb.playFromHead();
+								}								
+								if(game.imgWrap.find('div').length == 0){	//dog已全部消灭完毕
+									game.lev++;
+									game.everLevAdd = game.lev;//等级越高，增加dog次数越多
+									cancelAnimationFrame(game.timeOut);//不再移动
+									setTimeout(function(){game.creatList();},1200); //重新生成list并且开始move
+								}
+							},250)
+							
+						}else{
+							game.state = 0;
+							cancelAnimationFrame(game.timeOut);//不再移动
+							var divL = game.imgWrap.find('div');
+							divL.eq(divL.length-1).remove();
+							setTimeout(function(){
+								game.imgWrap.append('<div class="'+(k==1?"red":"blue")+' error"></div>')
+							},120)
+							
+							if(game.ifBgMusic){
+								CP.Media.Media0.pause();
+								CP.Media.Media_over.playFromHead();
+							}
+							setTimeout(function(){game.over();},800); 
+						}
+						//生成炮弹
+						function creatBomb(){
+							var imgListH = game.imgWrap.height()+game.y; //dog列表在界面显示的高度						
+							var t = ((game.windowH-60)-imgListH)/game.windowH * 0.25; //按照0.25移动完整个window,计算移动到子弹需要的时间
+							var id = "bomb"+game.successNum;							
+							$("#game").append('<div id="'+id+'" class="bomb" style="top:'+(game.windowH-80)+'px"></div>');
+							setTimeout(function(){
+								$("#"+id).animate({
+									top:imgListH+'px'
+								},t*1000,'ease-in',function(){										
+									if(game.state == 0){	//游戏结束不需要炮弹散开效果
+										$("#"+id).remove();
+									}else{
+										$("#"+id).html('<i></i><i></i><i></i><i></i>').addClass('bombAnimate');
+										removeDom($("#"+id),250);
+									}
+								})
+							},1)
+						}	
+						function removeDom(dom,delay){
+							setTimeout(function(){
+								dom?dom.remove():0;
+							},delay)
+						}
+					},					
+					//随机生成dog
+					randomImg:function(num){
+						var img = [];
+						var _dog = [];
+						for(var i=0;i<num;i++){
+							if(Math.random()<0.5){
+								_dog.unshift(0);
+								img.push('<div class="myswing red"></div>');
+							}else{
+								_dog.unshift(1);
+								img.push('<div class="myswing blue"></div>');
+							}
+						}
+						//按顺序生成this.dog数组
+						if(this.dog.length == 0){
+							this.dog = _dog;
+						}else{
+							this.dog = this.dog.concat(_dog);
+						}
+						//console.log(this.dog)
+						return img;
+					},
+					//imgList移动
+					imgListMove:function(){						
+						game.timeOut = requestAnimationFrame(function() {							
+							game.y += game.initSpeed+game.lev*0.5;
+							//game.y>-50则需要补充dog,并且改变game.y
+							if(game.y > -50){
+								if(game.everLevAdd > 0){
+									game.y += -10*50;
+									game.imgWrap.prepend(game.randomImg(10).join('')).css({
+										'top':game.y+'px'
+									});
+									game.everLevAdd--;
+								}else{	//此时不增加dog继续下移，并且提高难度等级									
+									game.state = 2;
+								}
+							}
+							//窗口高度-img列表在窗口的显示高度 > 50 则能继续下移，否则over
+							if(game.windowH-(game.imgWrap.height()+game.y) > 55){
+								game.imgWrap.css({
+									'top':game.y+'px'
+								})
+								game.imgListMove();
+							}else{
+								game.state = 0;
+								if(game.ifBgMusic){
+									CP.Media.Media0.pause();
+									CP.Media.Media_over.playFromHead();
+								}
+								setTimeout(function(){game.over();},800);
+							}
+						})
+					},
+					//游戏结束
+					over:function(){
+						//if(game.state == 0)return;
+						game.state = 0;
+						//如果是历史最高分则记录本地
+						if(this.successNum > this.bestRecord){
+							$("#record_best").text(this.successNum);
+							$("#begin_record_best").text(this.successNum);
+							CP.Data.set('G_dog_best_record',this.successNum);
+						}
+						$("#resultNum").text(game.successNum);
+						//return;
+									
+						$("#game").hide();
+						$("#game_footer").attr('class','');
+						$("#result_text").show();
+						$("#begin").attr('class','bounceInDown animated');
+					},
+					//重新开始
+					start:function(){
+						this.successNum = 0;
+						this.lev = 0;
+						
+						//switch(t2-t1)
+						this.initSpeed = this._test_initSpeed;
+						this.dog = [];
+						$('.bomb').remove();
+						$("#record_now").text(0);
+						this.windowH = $(window).height();//部分手机存在页面高度变化
+						cancelAnimationFrame(game.timeOut);//不再移动
+						//重置数据
+						this.creatList();
+						//放背景音乐
+						if(game.ifBgMusic){
+							CP.Media.Media0.play();
+						}
+						$("#begin").attr('class','bounceOutUp animated');
+						setTimeout(function(){
+							$("#game").show();
+							$("#game_footer").attr('class','bounceInUp animated');
+						},250)
+						
+					}
+				}
+				game.init();				
+			})()
+			
+		</script>
+	</body>
+</html>
